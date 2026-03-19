@@ -1,0 +1,7 @@
+@import 'leaflet/dist/leaflet.css';
+
+#map-canvas {
+    width: 100%;
+    height: 100%;
+    transition: width 0.3s ease, height 0.3s ease;
+}

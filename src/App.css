@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@utility separator-bottom {
+    @apply border-b border-b-zinc-300;
+}
+
+html, body, #root {
+    @apply w-screen h-screen
+}
+
+.app {
+    @apply w-screen h-screen;
+    @apply flex flex-col bg-linear-to-b from-white via-violet-200 to-violet-200;
+}
+
+.header {
+    @apply mx-4 mt-2;
+}
+
+.subtitle {
+    @apply font-bold mb-2 separator-bottom uppercase;
+}
+
+.card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-md p-4;
+}
