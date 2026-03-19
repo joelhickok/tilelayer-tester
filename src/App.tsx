@@ -7,6 +7,7 @@ import LeafletMap from './LeafletMap'
 import exampleUrls from './example-urls'
 
 export default function App() {
+    const base = import.meta.env.BASE_URL
     const params = new URLSearchParams(window.location.search)
     const paramExample = () => params.get('example') || exampleUrls[2].url
 
@@ -29,7 +30,7 @@ export default function App() {
         processUrl(ex.url)
         const params = new URLSearchParams()
         params.append('example', ex.url)
-        window.location.assign(`${window.location.origin}?${params}`)
+        window.location.assign(`${window.location.origin}${base}?${params}`)
     }
 
     function isValidUrl(string: string) {
@@ -133,7 +134,6 @@ export default function App() {
                             )}
                         </For>
                     </div>
-
 
                     <div class="card grow flex flex-col h-100 overflow-hidden">
 
