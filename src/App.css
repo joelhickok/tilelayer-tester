@@ -8,6 +8,10 @@ html, body, #root {
     @apply w-screen h-screen
 }
 
+a {
+    @apply text-violet-800 cursor-pointer;
+}
+
 .app {
     @apply w-screen h-screen;
     @apply flex flex-col bg-linear-to-b from-white via-violet-200 to-violet-200;
@@ -18,7 +22,7 @@ html, body, #root {
 }
 
 .subtitle {
-    @apply font-bold mb-2 separator-bottom uppercase;
+    @apply font-bold separator-bottom uppercase;
 }
 
 .card {

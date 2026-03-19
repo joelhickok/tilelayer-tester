@@ -1,7 +1,7 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
+  "name": "tilelayer-tester",
+  "version": "1.0.0",
+  "description": "Test XYZ tilelayer URLs to see if they are valid and online.",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -20,7 +20,7 @@
     "jsdom": "^25.0.1",
     "solid-devtools": "^0.34.3",
     "typescript": "^5.7.2",
-    "vite": "^7.1.4",
+    "vite": "7.1.11",
     "vite-plugin-solid": "2.11.9",
     "vitest": "^4.0.0"
   },

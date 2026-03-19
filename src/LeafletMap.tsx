@@ -19,6 +19,8 @@ export default function LeafletMap(props: { url: Accessor<string> }) {
             // @ts-expect-error: map accessor cannot be typed correctly
             layer()?.addTo(map())
 
+            // if a tile request fails, there will be several or more, so throttle the result
+            // rather than display too many toast messages
             const throttledErrorFunc = throttle(() => {
                 // https://github.com/ardeora/solid-toast
                 toast.error('Failed to load tiles.  Likely an invalid URL.', {
@@ -44,9 +46,9 @@ export default function LeafletMap(props: { url: Accessor<string> }) {
             zoom,
         })
 
-        map.on('moveend zoomend', () => {
-            console.log(map.getZoom(), map.getCenter())
-        })
+        // map.on('moveend zoomend', () => {
+        //     console.log(map.getZoom(), map.getCenter())
+        // })
 
         setMap(map)
         addLayer(props.url())

@@ -15,10 +15,13 @@ export default function App() {
     const [history, setHistory] = createSignal<string[]>([])
 
     const local = localStorage.getItem('history')
+
+    // use localStorage history if available
     if (local) {
         setHistory(JSON.parse(local))
     }
 
+    // if a url is provided through URL params, then load it
     if (paramExample()) {
         const example = exampleUrls.find(exUrl => exUrl.url === paramExample())
         if (example) {
@@ -26,30 +29,10 @@ export default function App() {
         }
     }
 
+    // evaluate if the URL is valid, push history, update URL params, and assign URL to map layer
     const assignUrl = (ex: ExampleURL) => {
-        processUrl(ex.url)
-        const params = new URLSearchParams()
-        params.append('example', ex.url)
-        window.location.assign(`${window.location.origin}${base}?${params}`)
-    }
+        const url = ex.url
 
-    function isValidUrl(string: string) {
-        try {
-            const url = new URL(string)
-            if (url.protocol === 'http:' || url.protocol === 'https:') {
-                try {
-                    new URL(string)
-                    return true
-                } catch (err) {
-                    return false
-                }
-            }
-        } catch (err) {
-            return false
-        }
-    }
-
-    const processUrl = (url: string) => {
         if (!isValidUrl(url)) {
             toast.error('Invalid URL.  Ensure the URL contains all valid URL components.', {
                 duration: 1000 * 4,
@@ -79,6 +62,31 @@ export default function App() {
         }
 
         setUrl(url)
+
+        const params = new URLSearchParams()
+        params.append('example', ex.url)
+        window.location.assign(`${window.location.origin}${base}?${params}`)
+    }
+
+    const clearHistory = () => {
+        setHistory([])
+    }
+
+    // validator for some basic URL properties
+    const isValidUrl = (string: string) => {
+        try {
+            const url = new URL(string)
+            if (url.protocol === 'http:' || url.protocol === 'https:') {
+                try {
+                    new URL(string)
+                    return true
+                } catch (err) {
+                    return false
+                }
+            }
+        } catch (err) {
+            return false
+        }
     }
 
     return (
@@ -92,11 +100,13 @@ export default function App() {
 
                     <div>
                         <p class="text-2xl font-bold text-violet-800">Tilelayer Status Tester</p>
-                        <p class="text-gray-500">aka "xyz" layers</p>
+                        <p class="text-gray-500">aka "xyz" layers or <a
+                            href="https://en.wikipedia.org/wiki/Tiled_web_map" target="_blank">Tiled web maps</a>.
+                        </p>
                     </div>
 
                     <div class="text-violet-800">
-                        Test to see if a tilelayer is valid and online.
+                        Preview a layer, or test it out without having to build a project or use an online code editor.
                     </div>
 
                 </div>
@@ -108,7 +118,7 @@ export default function App() {
                 <input id="urlInput"
                        class="border border-gray-300 mt-1 rounded-xl px-4 py-1 w-full shadow-sm"
                        type="text"
-                       onInput={(e) => processUrl(e.target.value)}
+                       onInput={(e) => assignUrl({url: e.target.value})}
                        value={url()}
                 />
 
@@ -126,7 +136,7 @@ export default function App() {
                         </div>
                         <For each={exampleUrls}>
                             {(exampleUrl, index) => (
-                                <a class="text-violet-800 block separator-bottom py-1"
+                                <a class="block separator-bottom py-1"
                                    onClick={() => assignUrl(exampleUrl)}
                                 >
                                     {exampleUrl.label}
@@ -137,11 +147,14 @@ export default function App() {
 
                     <div class="card grow flex flex-col h-100 overflow-hidden">
 
-                        <div class="flex justify-between">
+                        <div class="flex justify-between items-end gap-3">
                             <div class="subtitle">
                                 History:
                             </div>
-                            <div class="font-light text-sm text-gray-500">
+                            <button onClick={clearHistory} className="text-xs text-gray-400 cursor-pointer">
+                                Clear
+                            </button>
+                            <div class="ml-auto font-light text-sm text-gray-500">
                                 rollover to see full URL
                             </div>
                         </div>
@@ -150,7 +163,8 @@ export default function App() {
                             <For each={history()}>
                                 {(historyItem, index) => (
                                     <div title={historyItem}
-                                         class="overflow-hidden text-ellipsis border-b border-b-zinc-300 py-2"
+                                         role="button"
+                                         class="overflow-hidden text-ellipsis border-b border-b-zinc-300 py-2 cursor-pointer"
                                          onClick={() => assignUrl({url: historyItem})}
                                     >
                                         {historyItem}
